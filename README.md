@@ -2,7 +2,7 @@
 
 A fast, zero-dependency Base58 encoding and decoding library for Rust.
 
-[![CI](https://github.com/cmackenzie1/b58-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/cmackenzie1/b58-rs/actions/workflows/ci.yml)
+[![CI](https://github.com/cmackenzie1/base58-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/cmackenzie1/base58-rs/actions/workflows/ci.yml)
 [![Crates.io](https://img.shields.io/crates/v/b58.svg)](https://crates.io/crates/b58)
 [![Documentation](https://docs.rs/b58/badge.svg)](https://docs.rs/b58)
 
