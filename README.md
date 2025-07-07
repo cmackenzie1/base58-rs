@@ -9,7 +9,7 @@ A fast, zero-dependency Base58 encoding and decoding library for Rust.
 ## Features
 
 - **Zero dependencies**: No external crates required at runtime
-- **Bitcoin alphabet**: Uses the standard Bitcoin Base58 alphabet (`123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz`)
+- **Multiple alphabets**: Supports Bitcoin (default), Ripple, and Flickr Base58 alphabets
 - **Arbitrary precision**: Handles inputs of any size using big integer arithmetic
 - **Comprehensive error handling**: Clear error messages for invalid input
 - **Well tested**: Extensive test suite with edge cases and roundtrip testing
@@ -28,7 +28,7 @@ b58 = "0.1"
 ```rust
 use b58::{encode, decode};
 
-// Encode bytes to Base58
+// Encode bytes to Base58 (uses Bitcoin alphabet by default)
 let data = b"Hello, World!";
 let encoded = encode(data);
 println!("Encoded: {}", encoded); // "72k1xXWG59fYdzSNoA"
@@ -36,6 +36,25 @@ println!("Encoded: {}", encoded); // "72k1xXWG59fYdzSNoA"
 // Decode Base58 string back to bytes
 let decoded = decode(&encoded).unwrap();
 assert_eq!(data, decoded.as_slice());
+```
+
+### Using Different Alphabets
+
+```rust
+use b58::{encode_with_alphabet, decode_with_alphabet, Alphabet};
+
+// Encode using Ripple alphabet
+let data = b"Hello, World!";
+let encoded = encode_with_alphabet(data, Alphabet::Ripple);
+println!("Ripple encoded: {}", encoded);
+
+// Decode using Ripple alphabet
+let decoded = decode_with_alphabet(&encoded, Alphabet::Ripple).unwrap();
+assert_eq!(data, decoded.as_slice());
+
+// Encode using Flickr alphabet
+let encoded_flickr = encode_with_alphabet(data, Alphabet::Flickr);
+println!("Flickr encoded: {}", encoded_flickr);
 ```
 
 ### Error Handling
@@ -54,8 +73,16 @@ match decode("invalid0characters") {
 
 ### Functions
 
-- `encode(input: &[u8]) -> String` - Encodes a byte slice to a Base58 string
-- `decode(input: &str) -> Result<Vec<u8>, DecodeError>` - Decodes a Base58 string to bytes
+- `encode(input: &[u8]) -> String` - Encodes a byte slice to a Base58 string using Bitcoin alphabet
+- `decode(input: &str) -> Result<Vec<u8>, DecodeError>` - Decodes a Base58 string to bytes using Bitcoin alphabet
+- `encode_with_alphabet(input: &[u8], alphabet: Alphabet) -> String` - Encodes using specified alphabet
+- `decode_with_alphabet(input: &str, alphabet: Alphabet) -> Result<Vec<u8>, DecodeError>` - Decodes using specified alphabet
+
+### Alphabets
+
+- `Alphabet::Bitcoin` (default) - `123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz`
+- `Alphabet::Ripple` - `rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz`
+- `Alphabet::Flickr` - `123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ`
 
 ### Error Types
 
@@ -69,7 +96,8 @@ This library uses big integer arithmetic to handle arbitrarily large inputs with
 
 1. **Encoding**: Converts input bytes to a big integer, then repeatedly divides by 58 to get Base58 digits
 2. **Decoding**: Multiplies accumulated value by 58 and adds each digit value
-3. **Leading zeros/ones**: Properly handles leading zero bytes as '1' characters in Base58
+3. **Leading zeros**: Properly handles leading zero bytes as the first character of the chosen alphabet
+4. **Alphabet flexibility**: Each alphabet variant maintains its own character set and decode table for efficient lookups
 
 ## Performance
 
