@@ -14,7 +14,9 @@ A fast, zero-dependency Base58 encoding and decoding library for Rust.
 - **Comprehensive error handling**: Clear error messages for invalid input
 - **Well tested**: Extensive test suite with edge cases and roundtrip testing
 
-## Usage
+## Installation
+
+### As a Library
 
 Add this to your `Cargo.toml`:
 
@@ -23,7 +25,19 @@ Add this to your `Cargo.toml`:
 b58 = "0.1"
 ```
 
-### Basic Usage
+### As a Command Line Tool
+
+Install the binary using cargo:
+
+```bash
+cargo install b58
+```
+
+## Usage
+
+### Library Usage
+
+#### Basic Usage
 
 ```rust
 use b58::{encode, decode};
@@ -38,7 +52,7 @@ let decoded = decode(&encoded).unwrap();
 assert_eq!(data, decoded.as_slice());
 ```
 
-### Using Different Alphabets
+#### Using Different Alphabets
 
 ```rust
 use b58::{encode_with_alphabet, decode_with_alphabet, Alphabet};
@@ -57,7 +71,7 @@ let encoded_flickr = encode_with_alphabet(data, Alphabet::Flickr);
 println!("Flickr encoded: {}", encoded_flickr);
 ```
 
-### Error Handling
+#### Error Handling
 
 ```rust
 use b58::{decode, DecodeError};
@@ -68,6 +82,48 @@ match decode("invalid0characters") {
     Err(e) => println!("Error: {}", e),
 }
 ```
+
+### Command Line Usage
+
+The `base58` binary provides a convenient command-line interface for encoding and decoding Base58 data, similar to the `base64` command:
+
+```bash
+# Encode text to Base58 (default behavior)
+printf "Hello, World!" | base58
+# Output: 72k1xXWG59fYdzSNoA
+
+# Decode Base58 back to original data
+printf "72k1xXWG59fYdzSNoA" | base58 -d
+# Output: Hello, World!
+
+# Use different alphabets
+printf "Hello, World!" | base58 --alphabet ripple
+# Output: fpkrxXWGn9CYdzS4ow
+
+printf "Hello, World!" | base58 --alphabet flickr
+# Output: 72K1Xwvg59ExCZrnNa
+
+# Decode with specific alphabet
+printf "fpkrxXWGn9CYdzS4ow" | base58 -d --alphabet ripple
+# Output: Hello, World!
+
+# Encode/decode files
+base58 < input.txt > encoded.txt
+base58 -d < encoded.txt > output.txt
+
+# Show help
+base58 --help
+```
+
+#### Available Options
+
+- `-d, --decode` - Decode Base58 input (default: encode)
+- `-a, --alphabet <ALPHABET>` - Specify alphabet (bitcoin, ripple, flickr) [default: bitcoin]  
+- `-h, --help` - Show help information
+
+#### Design Philosophy
+
+Like the standard `base64` command, `base58` defaults to encoding mode when no flags are specified. This provides a clean, intuitive interface that follows Unix conventions.
 
 ## API Reference
 

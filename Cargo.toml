@@ -10,4 +10,8 @@ readme = "README.md"
 keywords = ["base58", "encoding", "decoding", "bitcoin", "crypto"]
 categories = ["encoding", "cryptography"]
 
+[[bin]]
+name = "base58"
+path = "src/main.rs"
+
 [dependencies]
