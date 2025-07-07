@@ -131,3 +131,42 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Rust 2024 edition
 - No external dependencies
 - Works with `no_std` environments (std features used only for error trait implementations)
+
+## FAQ
+
+### Why Base58?
+
+Base58 was designed specifically for use in Bitcoin addresses to provide human-friendly encoding with several key benefits:
+- **No ambiguous characters**: Excludes 0 (zero), O (capital o), I (capital i) and l (lowercase L) to prevent confusion
+- **Alphanumeric only**: Contains only letters and numbers, making it easy to select with double-click
+- **Compact representation**: More efficient than hexadecimal while remaining readable
+
+### Is Base58 URL-safe?
+
+Yes! Base58 is inherently URL-safe because it only uses alphanumeric characters (no special characters like +, /, or =). This makes it ideal for:
+- URL parameters
+- File names
+- Database keys
+- Any context where special characters might cause issues
+
+### Encoding Size Comparison
+
+Here's how Base58 compares to other common encodings:
+
+| Encoding | Characters Used | Size Increase | URL-Safe |
+|----------|----------------|---------------|----------|
+| Hex      | 16             | 100%          | Yes      |
+| Base32   | 32             | 60%           | Yes*     |
+| Base58   | 58             | ~38%          | Yes      |
+| Base64   | 64             | 33%           | No**     |
+
+*Base32 typically uses padding (=) which requires URL encoding
+**Base64 uses +, /, and = which require URL encoding
+
+For example, encoding 32 random bytes:
+- Hex: 64 characters
+- Base32: 52 characters (plus padding)
+- Base58: 44 characters
+- Base64: 44 characters (plus padding)
+
+While Base58 produces slightly larger output than Base64, it's completely URL-safe without any encoding, making it perfect for web applications, APIs, and anywhere human readability matters.
