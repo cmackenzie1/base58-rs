@@ -21,8 +21,7 @@
 //! ```
 
 /// Enum representing different Base58 alphabets.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[derive(Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum Alphabet {
     /// Bitcoin alphabet: 123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz
     #[default]
@@ -32,7 +31,6 @@ pub enum Alphabet {
     /// Flickr alphabet: 123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ
     Flickr,
 }
-
 
 impl Alphabet {
     /// Returns the alphabet string for the given alphabet variant.
