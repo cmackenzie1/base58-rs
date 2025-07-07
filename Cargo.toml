@@ -1,6 +1,6 @@
 [package]
 name = "b58"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "A Base58 encoding/decoding library with no external dependencies"
 license = "MIT"
